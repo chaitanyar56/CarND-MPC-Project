@@ -37,8 +37,7 @@ dimensions.
 #### Constructor Tensor<data_type, rank>(size_array)
 
 Constructor where the sizes for the constructor are specified as an array of
-values instead of an explicitly list of parameters.  The array type to use is
-```Eigen::array<Eigen::Index>```.  The array can be constructed automatically
+values instead of an explicitly list of parameters.  The array type to use is ```Eigen::array<Eigen::Index>```.  The array can be constructed automatically
 from an initializer list.
 
     // Create a tensor of strings of rank 2 with sizes 5, 7.
@@ -95,10 +94,7 @@ See Assigning to a TensorRef below.
 
 #### <data_type> tensor(index0, index1...)
 
-Return the element at position ```(index0, index1...)``` in tensor
-```tensor```.  You must pass as many parameters as the rank of ```tensor```.
-The expression can be used as an l-value to set the value of the element at the
-specified position.  The value returned is of the datatype of the tensor.
+Return the element at position ```(index0, index1...)``` in tensor ```tensor```.  You must pass as many parameters as the rank of ```tensor```. The expression can be used as an l-value to set the value of the element at the specified position.  The value returned is of the datatype of the tensor.
 
     // Set the value of the element at position (0, 1, 0);
     Tensor<float, 3> t_3d(2, 3, 4);
@@ -121,13 +117,9 @@ specified position.  The value returned is of the datatype of the tensor.
 
 ## TensorLayout
 
-The tensor library supports 2 layouts: ```ColMajor``` (the default) and
-```RowMajor```.  Only the default column major layout is currently fully
-supported, and it is therefore not recommended to attempt to use the row major
-layout at the moment.
+The tensor library supports 2 layouts: ```ColMajor``` (the default) and ```RowMajor```.  Only the default column major layout is currently fully supported, and it is therefore not recommended to attempt to use the row major layout at the moment.
 
-The layout of a tensor is optionally specified as part of its type. If not
-specified explicitly column major is assumed.
+The layout of a tensor is optionally specified as part of its type. If not specified explicitly column major is assumed.
 
     Tensor<float, 3, ColMajor> col_major;  // equivalent to Tensor<float, 3>
     TensorMap<Tensor<float, 3, RowMajor> > row_major(data, ...);
@@ -135,9 +127,7 @@ specified explicitly column major is assumed.
 All the arguments to an expression must use the same layout. Attempting to mix
 different layouts will result in a compilation error.
 
-It is possible to change the layout of a tensor or an expression using the
-```swap_layout()``` method.  Note that this will also reverse the order of the
-dimensions.
+It is possible to change the layout of a tensor or an expression using the ```swap_layout()``` method.  Note that this will also reverse the order of the dimensions.
 
     Tensor<float, 2, ColMajor> col_major(2, 4);
     Tensor<float, 2, RowMajor> row_major(2, 4);
@@ -175,9 +165,7 @@ the following code computes the elementwise addition of two tensors:
 While the code above looks easy enough, it is important to understand that the
 expression ```t1 + t2``` is not actually adding the values of the tensors.  The
 expression instead constructs a "tensor operator" object of the class
-TensorCwiseBinaryOp<scalar_sum>, which has references to the tensors
-```t1``` and ```t2```.  This is a small C++ object that knows how to add
-```t1``` and ```t2```.  It is only when the value of the expression is assigned
+TensorCwiseBinaryOp<scalar_sum>, which has references to the tensors ```t1``` and ```t2```.  This is a small C++ object that knows how to add ```t1``` and ```t2```.  It is only when the value of the expression is assigned
 to the tensor ```t3``` that the addition is actually performed.  Technically,
 this happens through the overloading of ```operator=()``` in the Tensor class.
 
@@ -200,8 +188,7 @@ does not have its intuitive meaning.  Consider these 2 lines of code:
 
 In the first line we allocate the tensor ```t3``` and it will contain the
 result of the addition of ```t1``` and ```t2```.  In the second line, ```t4```
-is actually the tree of tensor operators that will compute the addition of
-```t1``` and ```t2```.  In fact, ```t4``` is *not* a tensor and you cannot get
+is actually the tree of tensor operators that will compute the addition of ```t1``` and ```t2```.  In fact, ```t4``` is *not* a tensor and you cannot get
 the values of its elements:
 
     Tensor<float, 3> t3 = t1 + t2;
@@ -321,8 +308,7 @@ to be evaluated many times:
     Tensor<...> Y = ((X - X.maximum(depth_dim).reshape(dims2d).broadcast(bcast))
                      * beta).exp();
 
-Inserting a call to ```eval()``` between the ```maximum()``` and
-```reshape()``` calls guarantees that maximum() is only computed once and
+Inserting a call to ```eval()``` between the ```maximum()``` and ```reshape()``` calls guarantees that maximum() is only computed once and
 greatly speeds-up execution:
 
     Tensor<...> Y =
@@ -429,14 +415,14 @@ This is exactly the same as not inserting a ```device()``` call.
     c.device(my_device) = a + b;
 
 #### Evaluating with a Thread Pool
-
+```
     // Create the Eigen ThreadPoolDevice.
     Eigen::ThreadPoolDevice my_device(4 /* number of threads to use */);
 
     // Now just use the device when evaluating expressions.
     Eigen::Tensor<float, 2> c(30, 50);
     c.device(my_device) = a.contract(b, dot_product_dims);
-
+```
 
 #### Evaluating On GPU
 
@@ -460,16 +446,13 @@ dimensions of a tensor.  See ```dimensions()```.
 
 #### <Tensor-Type>::Index
 
-Acts like an ```int```.  Used for indexing tensors along their dimensions.  See
-```operator()```, ```dimension()```, and ```size()```.
+Acts like an ```int```.  Used for indexing tensors along their dimensions.  See ```operator()```, ```dimension()```, and ```size()```.
 
 #### <Tensor-Type>::Scalar
 
-Represents the datatype of individual tensor elements.  For example, for a
-```Tensor<float>```, ```Scalar``` is the type ```float```.  See
-```setConstant()```.
+Represents the datatype of individual tensor elements.  For example, for a ```Tensor<float>```, ```Scalar``` is the type ```float```.  See ```setConstant()```.
 
-#### <Operation>
+#### Operation
 
 We use this pseudo type to indicate that a tensor Operation is returned by a
 method.  We indicate in the text the type and dimensions of the tensor that the
@@ -518,8 +501,7 @@ If you use a C++11 compiler, you can use ```auto``` to simplify the code:
 
 ### Index dimension(Index n)
 
-Returns the n-th dimension of the tensor.  The actual type of the
-```dimension()``` result is ```<Tensor-Type>::Index```, but you can
+Returns the n-th dimension of the tensor.  The actual type of the ```dimension()``` result is ```<Tensor-Type>::Index```, but you can
 always use it like an int.
 
       Eigen::Tensor<float, 2> a(3, 4);
@@ -530,8 +512,7 @@ always use it like an int.
 ### Index size()
 
 Returns the total number of elements in the tensor.  This is the product of all
-the tensor dimensions.  The actual type of the ```size()``` result is
-```<Tensor-Type>::Index```, but you can always use it like an int.
+the tensor dimensions.  The actual type of the ```size()``` result is ```<Tensor-Type>::Index```, but you can always use it like an int.
 
     Eigen::Tensor<float, 2> a(3, 4);
     cout << "Size: " << a.size();
@@ -654,9 +635,7 @@ most deeply nested lists must contains P scalars of the Tensor type where P is
 the size of the last dimension of the Tensor.
 
 For example, for a ```TensorFixedSize<float, 2, 3>``` the initializer list must
-contains 2 lists of 3 floats each.
-
-```setValues()``` returns the tensor itself in case you want to chain another
+contains 2 lists of 3 floats each. ```setValues()``` returns the tensor itself in case you want to chain another
 call.
 
     Eigen::Tensor<float, 2> a(2, 3);
@@ -1037,8 +1016,7 @@ implementing a few methods from a reductor template.
 
 ### Reduction Dimensions
 
-All reduction operations take a single parameter of type
-```<TensorType>::Dimensions``` which can always be specified as an array of
+All reduction operations take a single parameter of type ```<TensorType>::Dimensions``` which can always be specified as an array of
 ints.  These are called the "reduction dimensions."  The values are the indices
 of the dimensions of the input tensor over which the reduction is done.  The
 parameter can have at most as many element as the rank of the input tensor;
@@ -1053,7 +1031,7 @@ results, but the code may execute faster if you list the dimensions in
 increasing order.
 
 Example: Reduction along one dimension.
-
+```
     // Create a tensor of 2 dimensions
     Eigen::Tensor<int, 2> a(2, 3);
     a.setValues({{1, 2, 3}, {6, 5, 4}});
@@ -1073,6 +1051,7 @@ Example: Reduction along one dimension.
     b
     3
     6
+```
 
 Example: Reduction along two dimensions.
 
@@ -1644,25 +1623,23 @@ patch index: 5
 6 7
 10 11
 
-### <Operation>  extract_image_patches(const Index patch_rows, const Index patch_cols,
-                          const Index row_stride, const Index col_stride,
-                          const PaddingType padding_type)
+### <Operation>  extract_image_patches(const Index patch_rows, const Index patch_cols, const Index row_stride, const Index col_stride, const PaddingType padding_type)
 
 Returns a tensor of coefficient image patches extracted from the input tensor,
 which is expected to have dimensions ordered as follows (depending on the data
 layout of the input tensor, and the number of additional dimensions 'N'):
 
-*) ColMajor
-1st dimension: channels (of size d)
-2nd dimension: rows (of size r)
-3rd dimension: columns (of size c)
-4th-Nth dimension: time (for video) or batch (for bulk processing).
+    ColMajor
+    1st dimension: channels (of size d)
+    2nd dimension: rows (of size r)
+    3rd dimension: columns (of size c)
+    4th-Nth dimension: time (for video) or batch (for bulk processing).
 
-*) RowMajor (reverse order of ColMajor)
-1st-Nth dimension: time (for video) or batch (for bulk processing).
-N+1'th dimension: columns (of size c)
-N+2'th dimension: rows (of size r)
-N+3'th dimension: channels (of size d)
+    RowMajor (reverse order of ColMajor)
+    1st-Nth dimension: time (for video) or batch (for bulk processing).
+    N+1'th dimension: columns (of size c)
+    N+2'th dimension: rows (of size r)
+    N+3'th dimension: channels (of size d)
 
 The returned tensor has one greater dimension than the input tensor, which is
 used to index each patch. The patch index in the output tensor depends on the
@@ -1670,34 +1647,35 @@ data layout of the input tensor: the patch index is the 4'th dimension in
 ColMajor layout, and the 4'th from the last dimension in RowMajor layout.
 
 For example, given the following input tensor with the following dimension
-sizes:
- *) depth:   2
- *) rows:    3
- *) columns: 5
- *) batch:   7
+sizes:  
 
-  Tensor<float, 4> tensor(2,3,5,7);
-  Tensor<float, 4, RowMajor> tensor_row_major = tensor.swap_layout();
+    depth:   2    
+    rows:    3
+    columns: 5
+    batch:   7
+
+    Tensor<float, 4> tensor(2,3,5,7);
+    Tensor<float, 4, RowMajor> tensor_row_major = tensor.swap_layout();
 
 2x2 image patches can be extracted and indexed using the following code:
 
-*) 2D patch: ColMajor (patch indexed by second-to-last dimension)
-  Tensor<float, 5> twod_patch;
-  twod_patch = tensor.extract_image_patches<2, 2>();
-  // twod_patch.dimension(0) == 2
-  // twod_patch.dimension(1) == 2
-  // twod_patch.dimension(2) == 2
-  // twod_patch.dimension(3) == 3*5
-  // twod_patch.dimension(4) == 7
+    2D patch: ColMajor (patch indexed by second-to-last dimension)
+    Tensor<float, 5> twod_patch;
+    twod_patch = tensor.extract_image_patches<2, 2>();
+    // twod_patch.dimension(0) == 2
+    // twod_patch.dimension(1) == 2
+    // twod_patch.dimension(2) == 2
+    // twod_patch.dimension(3) == 3*5
+    // twod_patch.dimension(4) == 7
 
-*) 2D patch: RowMajor (patch indexed by the second dimension)
-  Tensor<float, 5, RowMajor> twod_patch_row_major;
-  twod_patch_row_major = tensor_row_major.extract_image_patches<2, 2>();
-  // twod_patch_row_major.dimension(0) == 7
-  // twod_patch_row_major.dimension(1) == 3*5
-  // twod_patch_row_major.dimension(2) == 2
-  // twod_patch_row_major.dimension(3) == 2
-  // twod_patch_row_major.dimension(4) == 2
+    2D patch: RowMajor (patch indexed by the second dimension)
+    Tensor<float, 5, RowMajor> twod_patch_row_major;
+    twod_patch_row_major = tensor_row_major.extract_image_patches<2, 2>();
+    // twod_patch_row_major.dimension(0) == 7
+    // twod_patch_row_major.dimension(1) == 3*5
+    // twod_patch_row_major.dimension(2) == 2
+    // twod_patch_row_major.dimension(3) == 2
+    // twod_patch_row_major.dimension(4) == 2
 
 ## Special Operations
 
@@ -1753,5 +1731,3 @@ future these operations might be updated to return 0d tensors instead.
 *   Complex and integer values are known to be broken on GPUs. If you try to use
     them you'll most likely end up triggering a static assertion failure such as
     EIGEN_STATIC_ASSERT(packetSize > 1, YOU_MADE_A_PROGRAMMING_MISTAKE)
-
-

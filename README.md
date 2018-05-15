@@ -2,6 +2,12 @@
 
 The goal of this project is to track the generated trajectory from the path planning module using model predictive control algorithm to steer and accelerate the vehicle on a simulator track. CppAD and Ipopt packages are used to solve the model predictive control problem.
 
+
+[Output Video Link](https://www.youtube.com/watch?v=wK20AHnOxXQ)
+
+Sample Output screenshot of the simulator.
+![alt-txt](/images/mpcSS.png)
+
 ## Model
 
 Vehicle model used in the project is kinematic bicycle model. The equations for the model are shown below.
@@ -12,7 +18,7 @@ The state  `[x,y,psi,v,cte,epsi]` consist of  x-y position, heading angle, cross
 
 ## Time step Length and duration
 
-`N` time step Length and `dt` time step duration allows to predict till `t = Ndt` sec ahead with `N` points. In this project `N = 10` and `dt = 0.1` were optimal enough for prediction with less computations when compared to `N = 25` and `dt = 0.05` which had twice the computations for the same time `t`. 
+`N` time step Length and `dt` time step duration allows to predict till `t = Ndt` sec ahead with `N` points. In this project `N = 10` and `dt = 0.1` were optimal enough for prediction with less computations when compared to `N = 25` and `dt = 0.05` which had twice the computations for the same time `t`.
 
 ## Preprocessing and polynomial fitting
 
